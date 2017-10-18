@@ -20,8 +20,7 @@ class RepeatNTimesExtension(Extension):
 
 
 if __name__ == "__main__":
-    env = Environment()
-    env.add_extension(RepeatNTimesExtension)
+    env = Environment(extensions=[RepeatNTimesExtension])
     template = env.from_string(u"""
         {%- repeat 3 times -%}
             {% if not loop.first and not loop.last %}, {% endif -%}
