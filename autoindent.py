@@ -1,14 +1,11 @@
-# -*- encoding: utf-8 -*-
-
 import re
 
 from jinja2 import Environment
 from jinja2.ext import Extension
-from jinja2.lexer import Token
 from jinja2 import lexer, nodes
 
 
-class RichToken(Token):
+class RichToken(lexer.Token):
     pass
 
 
@@ -18,9 +15,6 @@ class AutoindentExtension(Extension):
 
     _indent_regex = re.compile(r"^ *")
     _whitespace_regex = re.compile(r"^\s*$")
-
-    def __init__(self, environment):
-        super(AutoindentExtension, self).__init__(environment)
 
     def filter_stream(self, stream):
         return lexer.TokenStream(self._generator(stream), stream.name, stream.filename)
@@ -69,13 +63,13 @@ class AutoindentExtension(Extension):
 if __name__ == "__main__":
     env = Environment(extensions=[AutoindentExtension])
     template = env.from_string(u"""
-{%- autoindent -%}
-    {%- if True -%}
+{%- autoindent %}
+    {% if True %}
         What is true, is true.
-    {%- endif %}
-    {%- if not False %}
+    {% endif %}
+    {% if not False %}
         But what is false, is not true.
-    {%- endif -%}
-{%- endautoindent -%}
+    {% endif %}
+{% endautoindent -%}
     """)
     print(template.render())
